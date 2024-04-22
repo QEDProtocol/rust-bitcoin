@@ -36,6 +36,10 @@ use crate::prelude::*;
 pub enum NetworkKind {
     /// The Bitcoin mainnet network.
     Main,
+    
+    /// The Dogecoin mainnet network.
+    Doge,
+    
     /// Some kind of testnet network.
     Test,
 }
@@ -52,8 +56,9 @@ impl From<Network> for NetworkKind {
         use Network::*;
 
         match n {
-            Bitcoin => NetworkKind::Main,
-            Testnet | Signet | Regtest => NetworkKind::Test,
+            Bitcoin | Liquid => NetworkKind::Main,
+            Doge => NetworkKind::Doge,
+            Testnet | Signet | Regtest | DogeTestnet | DogeRegtest | LiquidTestnet | LiquidRegtest => NetworkKind::Test,
         }
     }
 }
@@ -73,6 +78,18 @@ pub enum Network {
     Signet,
     /// Bitcoin's regtest network.
     Regtest,
+    /// Mainnet Dogecoin.
+    Dogecoin,
+    /// Dogecoin's testnet network.
+    DogeTestnet,
+    /// Dogecoin's regtest network.
+    DogeRegtest,
+    /// Mainnet Liquid.
+    Liquid,
+    /// Liquid's testnet network.
+    LiquidTestnet,
+    /// Liquid's regtest network.
+    LiquidRegtest,
 }
 
 impl Network {
@@ -118,6 +135,12 @@ impl Network {
             Network::Testnet => "test",
             Network::Signet => "signet",
             Network::Regtest => "regtest",
+            Network::Dogecoin => "dogecoin",
+            Network::DogeTestnet => "dogetestnet",
+            Network::DogeRegtest => "dogeregtest",
+            Network::Liquid => "liquid",
+            Network::LiquidTestnet => "liquidtestnet",
+            Network::LiquidRegtest => "liquidregtest",
         }
     }
 
@@ -138,6 +161,13 @@ impl Network {
             "test" => Testnet,
             "signet" => Signet,
             "regtest" => Regtest,
+            "dogecoin" => Dogecoin,
+            "dogetestnet" => DogeTestnet,
+            "dogeregtest" => DogeRegtest,
+            "liquid" => Liquid,
+            "liquidtestnet" => LiquidTestnet,
+            "liquidregtest" => LiquidRegtest,
+
             _ => return Err(ParseNetworkError(core_arg.to_owned())),
         };
         Ok(network)
@@ -172,11 +202,17 @@ impl Network {
 
     /// Returns the associated network parameters.
     pub const fn params(self) -> &'static Params {
-        const PARAMS: [Params; 4] = [
+        const PARAMS: [Params; 10] = [
             Params::new(Network::Bitcoin),
             Params::new(Network::Testnet),
             Params::new(Network::Signet),
             Params::new(Network::Regtest),
+            Params::new(Network::Dogecoin),
+            Params::new(Network::DogeTestnet),
+            Params::new(Network::DogeRegtest),
+            Params::new(Network::Liquid),
+            Params::new(Network::LiquidTestnet),
+            Params::new(Network::LiquidRegtest),
         ];
         &PARAMS[self as usize]
     }
@@ -254,6 +290,12 @@ impl FromStr for Network {
             "testnet" => Testnet,
             "signet" => Signet,
             "regtest" => Regtest,
+            "dogecoin" => Dogecoin,
+            "dogetestnet" => DogeTestnet,
+            "dogeregtest" => DogeRegtest,
+            "liquid" => Liquid,
+            "liquidtestnet" => LiquidTestnet,
+            "liquidregtest" => LiquidRegtest,
             _ => return Err(ParseNetworkError(s.to_owned())),
         };
         Ok(network)
@@ -269,6 +311,12 @@ impl fmt::Display for Network {
             Testnet => "testnet",
             Signet => "signet",
             Regtest => "regtest",
+            Dogecoin => "dogecoin",
+            DogeTestnet => "dogetestnet",
+            DogeRegtest => "dogeregtest",
+            Liquid => "liquid",
+            LiquidTestnet => "liquidtestnet",
+            LiquidRegtest => "liquidregtest",
         };
         write!(f, "{}", s)
     }

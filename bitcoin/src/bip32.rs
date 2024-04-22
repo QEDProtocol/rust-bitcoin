@@ -28,6 +28,10 @@ const VERSION_BYTES_MAINNET_PRIVATE: [u8; 4] = [0x04, 0x88, 0xAD, 0xE4];
 const VERSION_BYTES_TESTNETS_PUBLIC: [u8; 4] = [0x04, 0x35, 0x87, 0xCF];
 /// Version bytes for extended private keys on any of the testnet networks.
 const VERSION_BYTES_TESTNETS_PRIVATE: [u8; 4] = [0x04, 0x35, 0x83, 0x94];
+/// Version bytes for extended public keys on the Dogecoin network.
+const VERSION_BYTES_DOGECOIN_PUBLIC: [u8; 4] = [0x02, 0xFA, 0xCA, 0xFD];
+/// Version bytes for extended private keys on the Dogecoin network.
+const VERSION_BYTES_DOGECOIN_PRIVATE: [u8; 4] = [0x02, 0xFA, 0xC3, 0x98];
 
 /// The old name for xpub, extended public key.
 #[deprecated(since = "0.31.0", note = "use xpub instead")]
@@ -646,6 +650,8 @@ impl Xpriv {
             NetworkKind::Main
         } else if data.starts_with(&VERSION_BYTES_TESTNETS_PRIVATE) {
             NetworkKind::Test
+        }  else if data.starts_with(&VERSION_BYTES_DOGECOIN_PRIVATE) {
+            NetworkKind::Doge
         } else {
             let (b0, b1, b2, b3) = (data[0], data[1], data[2], data[3]);
             return Err(Error::UnknownVersion([b0, b1, b2, b3]));
@@ -671,6 +677,7 @@ impl Xpriv {
         ret[0..4].copy_from_slice(&match self.network {
             NetworkKind::Main => VERSION_BYTES_MAINNET_PRIVATE,
             NetworkKind::Test => VERSION_BYTES_TESTNETS_PRIVATE,
+            NetworkKind::Doge => VERSION_BYTES_DOGECOIN_PRIVATE,
         });
         ret[4] = self.depth;
         ret[5..9].copy_from_slice(&self.parent_fingerprint[..]);
@@ -778,6 +785,8 @@ impl Xpub {
             NetworkKind::Main
         } else if data.starts_with(&VERSION_BYTES_TESTNETS_PUBLIC) {
             NetworkKind::Test
+        }  else if data.starts_with(&VERSION_BYTES_DOGECOIN_PUBLIC) {
+            NetworkKind::Doge
         } else {
             let (b0, b1, b2, b3) = (data[0], data[1], data[2], data[3]);
             return Err(Error::UnknownVersion([b0, b1, b2, b3]));
@@ -803,6 +812,7 @@ impl Xpub {
         ret[0..4].copy_from_slice(&match self.network {
             NetworkKind::Main => VERSION_BYTES_MAINNET_PUBLIC,
             NetworkKind::Test => VERSION_BYTES_TESTNETS_PUBLIC,
+            NetworkKind::Doge => VERSION_BYTES_DOGECOIN_PUBLIC,
         });
         ret[4] = self.depth;
         ret[5..9].copy_from_slice(&self.parent_fingerprint[..]);

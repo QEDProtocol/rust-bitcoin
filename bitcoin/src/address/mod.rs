@@ -44,6 +44,7 @@ use crate::blockdata::script::witness_program::WitnessProgram;
 use crate::blockdata::script::witness_version::WitnessVersion;
 use crate::blockdata::script::{self, Script, ScriptBuf, ScriptHash};
 use crate::consensus::Params;
+use crate::constants::{PUBKEY_ADDRESS_PREFIX_DOGETEST, SCRIPT_ADDRESS_PREFIX_DOGECOIN};
 use crate::crypto::key::{
     CompressedPublicKey, PubkeyHash, PublicKey, TweakedPublicKey, UntweakedPublicKey,
 };
@@ -153,6 +154,7 @@ impl fmt::Display for AddressInner {
                 prefixed[0] = match network {
                     NetworkKind::Main => PUBKEY_ADDRESS_PREFIX_MAIN,
                     NetworkKind::Test => PUBKEY_ADDRESS_PREFIX_TEST,
+                    NetworkKind::Doge => PUBKEY_ADDRESS_PREFIX_DOGETEST,
                 };
                 prefixed[1..].copy_from_slice(&hash[..]);
                 base58::encode_check_to_fmt(fmt, &prefixed[..])
@@ -162,6 +164,7 @@ impl fmt::Display for AddressInner {
                 prefixed[0] = match network {
                     NetworkKind::Main => SCRIPT_ADDRESS_PREFIX_MAIN,
                     NetworkKind::Test => SCRIPT_ADDRESS_PREFIX_TEST,
+                    NetworkKind::Doge => SCRIPT_ADDRESS_PREFIX_DOGECOIN,
                 };
                 prefixed[1..].copy_from_slice(&hash[..]);
                 base58::encode_check_to_fmt(fmt, &prefixed[..])
@@ -205,6 +208,7 @@ impl KnownHrp {
             Bitcoin => Self::Mainnet,
             Testnet | Signet => Self::Testnets,
             Regtest => Self::Regtest,
+            _ => todo!(),
         }
     }
 

@@ -42,6 +42,14 @@ pub const SCRIPT_ADDRESS_PREFIX_MAIN: u8 = 5; // 0x05
 pub const PUBKEY_ADDRESS_PREFIX_TEST: u8 = 111; // 0x6f
 /// Test (tesnet, signet, regtest) script address prefix.
 pub const SCRIPT_ADDRESS_PREFIX_TEST: u8 = 196; // 0xc4
+/// Mainnet (dogecoin) pubkey address prefix.
+pub const PUBKEY_ADDRESS_PREFIX_DOGECOIN: u8 = 30; // 0x1e
+/// Mainnet (bitcoin) script address prefix.
+pub const SCRIPT_ADDRESS_PREFIX_DOGECOIN: u8 = 22; // 0x16
+/// Test (tesnet, signet, regtest) pubkey address prefix.
+pub const PUBKEY_ADDRESS_PREFIX_DOGETEST: u8 = 111; // 0x6f
+/// Test (tesnet, signet, regtest) script address prefix.
+pub const SCRIPT_ADDRESS_PREFIX_DOGETEST: u8 = 196; // 0xc4
 /// The maximum allowed script size.
 pub const MAX_SCRIPT_ELEMENT_SIZE: usize = 520;
 /// How may blocks between halvings.
@@ -134,6 +142,22 @@ pub fn genesis_block(params: impl AsRef<Params>) -> Block {
             },
             txdata,
         },
+        Network::Dogecoin => Block {
+            header: block::Header {
+                version: block::Version::ONE,
+                prev_blockhash: Hash::all_zeros(),
+                merkle_root,
+                time: 1386325540,
+                bits: CompactTarget::from_consensus(0x1e0ffff0),
+                nonce: 99943,
+            },
+            txdata, // todo use doge coin genesis tx
+        },
+        Network::DogeTestnet => todo!(),
+        Network::DogeRegtest => todo!(),
+        Network::Liquid => todo!(),
+        Network::LiquidTestnet => todo!(),
+        Network::LiquidRegtest => todo!(),
     }
 }
 
@@ -166,13 +190,47 @@ impl ChainHash {
         51, 42, 31, 199, 178, 183, 60, 241, 136, 145, 15,
     ]);
 
+    /// `ChainHash` for mainnet dogecoin.
+    pub const DOGECOIN: Self = Self([
+        145, 86, 53, 44, 24, 24, 179, 46, 144, 201, 231, 146, 239, 214, 161, 26, 130, 254, 121, 
+        86, 166, 48, 240, 59, 190, 226, 54, 206, 218, 227, 145, 26,
+    ]);
+    /// `ChainHash` for testnet dogecoin.
+    pub const DOGETESTNET: Self = Self([
+        158, 85, 80, 115, 208, 196, 243, 100, 86, 219, 137, 81, 244, 73, 112, 77, 84, 77, 40, 
+        38, 217, 170, 96, 99, 107, 64, 55, 70, 38, 120, 10, 187,
+    ]);
+    /// `ChainHash` for regtest dogecoin.
+    pub const DOGEREGTEST: Self = Self([
+        165, 115, 233, 28, 23, 114, 7, 108, 13, 64, 247, 14, 68, 8, 200, 58, 49, 112, 95, 41, 
+        106, 230, 231, 98, 157, 74, 220, 181, 163, 96, 33, 61,
+    ]);
+
+
+    /// `ChainHash` for mainnet liquid.
+    pub const LIQUID: Self = Self([
+        111, 226, 140, 10, 182, 241, 179, 114, 193, 166, 162, 70, 174, 99, 247, 79, 147, 30, 131, 
+        101, 225, 90, 8, 156, 104, 214, 25, 0, 0, 0, 0, 0,
+    ]);
+    /// `ChainHash` for testnet liquid.
+    pub const LIQUIDTESTNET: Self = Self([
+        67, 73, 127, 215, 248, 38, 149, 113, 8, 244, 163, 15, 217, 206, 195, 174, 186, 121, 151, 
+        32, 132, 233, 14, 173, 1, 234, 51, 9, 0, 0, 0, 0,
+    ]);
+    /// `ChainHash` for regtest liquid.
+    pub const LIQUIDREGTEST: Self = Self([
+        6, 34, 110, 70, 17, 26, 11, 89, 202, 175, 18, 96, 67, 235, 91, 191, 40, 195, 79, 58, 94,
+        51, 42, 31, 199, 178, 183, 60, 241, 136, 145, 15,
+    ]);
+
+
     /// Returns the hash of the `network` genesis block for use as a chain hash.
     ///
     /// See [BOLT 0](https://github.com/lightning/bolts/blob/ffeece3dab1c52efdb9b53ae476539320fa44938/00-introduction.md#chain_hash)
     /// for specification.
     pub fn using_genesis_block(params: impl AsRef<Params>) -> Self {
         let network = params.as_ref().network;
-        let hashes = [Self::BITCOIN, Self::TESTNET, Self::SIGNET, Self::REGTEST];
+        let hashes = [Self::BITCOIN, Self::TESTNET, Self::SIGNET, Self::REGTEST, Self::DOGECOIN, Self::DOGETESTNET, Self::DOGEREGTEST, Self::LIQUID, Self::LIQUIDTESTNET, Self::LIQUIDREGTEST];
         hashes[network as usize]
     }
 
@@ -181,7 +239,7 @@ impl ChainHash {
     /// See [BOLT 0](https://github.com/lightning/bolts/blob/ffeece3dab1c52efdb9b53ae476539320fa44938/00-introduction.md#chain_hash)
     /// for specification.
     pub const fn using_genesis_block_const(network: Network) -> Self {
-        let hashes = [Self::BITCOIN, Self::TESTNET, Self::SIGNET, Self::REGTEST];
+        let hashes = [Self::BITCOIN, Self::TESTNET, Self::SIGNET, Self::REGTEST, Self::DOGECOIN, Self::DOGETESTNET, Self::DOGEREGTEST, Self::LIQUID, Self::LIQUIDTESTNET, Self::LIQUIDREGTEST];
         hashes[network as usize]
     }
 

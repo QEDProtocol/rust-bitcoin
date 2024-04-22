@@ -485,6 +485,7 @@ impl PrivateKey {
         let network = match data[0] {
             128 => NetworkKind::Main,
             239 => NetworkKind::Test,
+            158 => NetworkKind::Doge,
             invalid => {
                 return Err(InvalidAddressVersionError { invalid }.into());
             }

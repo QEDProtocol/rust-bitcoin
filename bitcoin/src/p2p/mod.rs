@@ -222,6 +222,22 @@ impl Magic {
     /// Bitcoin regtest network magic bytes.
     pub const REGTEST: Self = Self([0xFA, 0xBF, 0xB5, 0xDA]);
 
+
+    /// Dogecoin mainnet network magic bytes.
+    pub const DOGECOIN: Self = Self([0xC0, 0xC0, 0xC0, 0xC0]);
+    /// Dogecoin testnet network magic bytes.
+    pub const DOGETESTNET: Self = Self([0xFC, 0xC1, 0xB7, 0xDC]);
+    /// Dogecoin regtest network magic bytes.
+    pub const DOGEREGTEST: Self = Self([0xFA, 0xBF, 0xB5, 0xDA]);
+
+
+    /// Liquid mainnet network magic bytes.
+    pub const LIQUID: Self = Self([0xF9, 0xBE, 0xB4, 0xD9]);
+    /// Liquid testnet network magic bytes.
+    pub const LIQUIDTESTNET: Self = Self([0x0B, 0x11, 0x09, 0x07]);
+    /// Liquid regtest network magic bytes.
+    pub const LIQUIDREGTEST: Self = Self([0xFA, 0xBF, 0xB5, 0xDA]);
+
     /// Create network magic from bytes.
     pub fn from_bytes(bytes: [u8; 4]) -> Magic { Magic(bytes) }
 
@@ -251,6 +267,12 @@ impl From<Network> for Magic {
             Network::Testnet => Magic::TESTNET,
             Network::Signet => Magic::SIGNET,
             Network::Regtest => Magic::REGTEST,
+            Network::Dogecoin => Magic::DOGECOIN,
+            Network::DogeTestnet => Magic::DOGETESTNET,
+            Network::DogeRegtest => Magic::DOGEREGTEST,
+            Network::Liquid => Magic::LIQUID,
+            Network::LiquidTestnet => Magic::LIQUIDTESTNET,
+            Network::LiquidRegtest => Magic::LIQUIDREGTEST,
         }
     }
 }
@@ -265,6 +287,12 @@ impl TryFrom<Magic> for Network {
             Magic::TESTNET => Ok(Network::Testnet),
             Magic::SIGNET => Ok(Network::Signet),
             Magic::REGTEST => Ok(Network::Regtest),
+            Magic::DOGECOIN => Ok(Network::Dogecoin),
+            Magic::DOGETESTNET => Ok(Network::DogeTestnet),
+            Magic::DOGEREGTEST => Ok(Network::DogeRegtest),
+            Magic::LIQUID => Ok(Network::Liquid),
+            Magic::LIQUIDTESTNET => Ok(Network::LiquidTestnet),
+            Magic::LIQUIDREGTEST => Ok(Network::LiquidRegtest),
             _ => Err(UnknownMagicError(magic)),
         }
     }

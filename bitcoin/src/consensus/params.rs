@@ -130,6 +130,24 @@ pub static SIGNET: Params = Params::SIGNET;
 /// The regtest parameters.
 pub static REGTEST: Params = Params::REGTEST;
 
+/// The dogecoin parameters.
+pub static DOGECOIN: Params = Params::DOGECOIN;
+/// The dogecoin testnet parameters.
+pub static DOGETESTNET: Params = Params::DOGETESTNET;
+/// The dogecoin regtest parameters.
+pub static DOGEREGTEST: Params = Params::DOGEREGTEST;
+
+
+/// The liquid parameters.
+pub static LIQUID: Params = Params::LIQUID;
+/// The liquid testnet parameters.
+pub static LIQUIDTESTNET: Params = Params::LIQUIDTESTNET;
+/// The liquid regtest parameters.
+pub static LIQUIDREGTEST: Params = Params::LIQUIDREGTEST;
+
+
+
+
 #[allow(deprecated)] // For `pow_limit`.
 impl Params {
     /// The mainnet parameters (alias for `Params::MAINNET`).
@@ -203,6 +221,112 @@ impl Params {
         no_pow_retargeting: true,
     };
 
+
+    // todo
+    pub const DOGECOIN: Params = Params {
+        network: Network::Dogecoin,
+        bip16_time: 1333238400,  // Apr 1 2012
+        bip34_height: 100000000, // not activated on regtest
+        bip65_height: 1351,
+        bip66_height: 1251,                    // used only in rpc tests
+        rule_change_activation_threshold: 108, // 75%
+        miner_confirmation_window: 144,
+        pow_limit: Target::MAX_ATTAINABLE_REGTEST,
+        max_attainable_target: Target::MAX_ATTAINABLE_REGTEST,
+        pow_target_spacing: 10 * 60,            // 10 minutes.
+        pow_target_timespan: 14 * 24 * 60 * 60, // 2 weeks.
+        allow_min_difficulty_blocks: true,
+        no_pow_retargeting: true,
+    };
+
+
+    // todo
+    pub const DOGEREGTEST: Params = Params {
+        network: Network::DogeRegtest,
+        bip16_time: 1333238400,  // Apr 1 2012
+        bip34_height: 100000000, // not activated on regtest
+        bip65_height: 1351,
+        bip66_height: 1251,                    // used only in rpc tests
+        rule_change_activation_threshold: 108, // 75%
+        miner_confirmation_window: 144,
+        pow_limit: Target::MAX_ATTAINABLE_REGTEST,
+        max_attainable_target: Target::MAX_ATTAINABLE_REGTEST,
+        pow_target_spacing: 10 * 60,            // 10 minutes.
+        pow_target_timespan: 14 * 24 * 60 * 60, // 2 weeks.
+        allow_min_difficulty_blocks: true,
+        no_pow_retargeting: true,
+    };
+
+    // todo
+    pub const DOGETESTNET: Params = Params {
+        network: Network::DogeTestnet,
+        bip16_time: 1333238400,  // Apr 1 2012
+        bip34_height: 100000000, // not activated on regtest
+        bip65_height: 1351,
+        bip66_height: 1251,                    // used only in rpc tests
+        rule_change_activation_threshold: 108, // 75%
+        miner_confirmation_window: 144,
+        pow_limit: Target::MAX_ATTAINABLE_REGTEST,
+        max_attainable_target: Target::MAX_ATTAINABLE_REGTEST,
+        pow_target_spacing: 10 * 60,            // 10 minutes.
+        pow_target_timespan: 14 * 24 * 60 * 60, // 2 weeks.
+        allow_min_difficulty_blocks: true,
+        no_pow_retargeting: true,
+    };
+
+
+    // todo
+    pub const LIQUID: Params = Params {
+        network: Network::Liquid,
+        bip16_time: 1333238400,  // Apr 1 2012
+        bip34_height: 100000000, // not activated on regtest
+        bip65_height: 1351,
+        bip66_height: 1251,                    // used only in rpc tests
+        rule_change_activation_threshold: 108, // 75%
+        miner_confirmation_window: 144,
+        pow_limit: Target::MAX_ATTAINABLE_REGTEST,
+        max_attainable_target: Target::MAX_ATTAINABLE_REGTEST,
+        pow_target_spacing: 10 * 60,            // 10 minutes.
+        pow_target_timespan: 14 * 24 * 60 * 60, // 2 weeks.
+        allow_min_difficulty_blocks: true,
+        no_pow_retargeting: true,
+    };
+
+
+    // todo
+    pub const LIQUIDREGTEST: Params = Params {
+        network: Network::LiquidRegtest,
+        bip16_time: 1333238400,  // Apr 1 2012
+        bip34_height: 100000000, // not activated on regtest
+        bip65_height: 1351,
+        bip66_height: 1251,                    // used only in rpc tests
+        rule_change_activation_threshold: 108, // 75%
+        miner_confirmation_window: 144,
+        pow_limit: Target::MAX_ATTAINABLE_REGTEST,
+        max_attainable_target: Target::MAX_ATTAINABLE_REGTEST,
+        pow_target_spacing: 10 * 60,            // 10 minutes.
+        pow_target_timespan: 14 * 24 * 60 * 60, // 2 weeks.
+        allow_min_difficulty_blocks: true,
+        no_pow_retargeting: true,
+    };
+
+    // todo
+    pub const LIQUIDTESTNET: Params = Params {
+        network: Network::LiquidTestnet,
+        bip16_time: 1333238400,  // Apr 1 2012
+        bip34_height: 100000000, // not activated on regtest
+        bip65_height: 1351,
+        bip66_height: 1251,                    // used only in rpc tests
+        rule_change_activation_threshold: 108, // 75%
+        miner_confirmation_window: 144,
+        pow_limit: Target::MAX_ATTAINABLE_REGTEST,
+        max_attainable_target: Target::MAX_ATTAINABLE_REGTEST,
+        pow_target_spacing: 10 * 60,            // 10 minutes.
+        pow_target_timespan: 14 * 24 * 60 * 60, // 2 weeks.
+        allow_min_difficulty_blocks: true,
+        no_pow_retargeting: true,
+    };
+
     /// Creates parameters set for the given network.    /// Creates parameters set for the given network.
     pub const fn new(network: Network) -> Self {
         match network {
@@ -210,6 +334,12 @@ impl Params {
             Network::Testnet => Params::TESTNET,
             Network::Signet => Params::SIGNET,
             Network::Regtest => Params::REGTEST,
+            Network::Dogecoin => Params::DOGECOIN,
+            Network::DogeTestnet => Params::DOGETESTNET,
+            Network::DogeRegtest => Params::DOGEREGTEST,
+            Network::Liquid => Params::LIQUID,
+            Network::LiquidTestnet => Params::LIQUIDTESTNET,
+            Network::LiquidRegtest => Params::LIQUIDREGTEST,
         }
     }
 
@@ -246,6 +376,12 @@ impl AsRef<Params> for Network {
             Network::Testnet => &TESTNET,
             Network::Signet => &SIGNET,
             Network::Regtest => &REGTEST,
+            Network::Dogecoin => &DOGECOIN,
+            Network::DogeTestnet => &DOGETESTNET,
+            Network::DogeRegtest => &DOGEREGTEST,
+            Network::Liquid => &LIQUID,
+            Network::LiquidTestnet => &LIQUIDTESTNET,
+            Network::LiquidRegtest => &LIQUIDREGTEST,
         }
     }
 }
